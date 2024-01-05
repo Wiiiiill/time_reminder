@@ -93,16 +93,17 @@ export default function App() {
       t.setSeconds(0)
       return getT3(t)
     }
-    let after = new Date(before.getTime() + d33)
+    let after = new Date(before.getTime() + d1 + d2)
     let afterDay = after.getDay()
     if (afterDay == 1 || afterDay == 0 || afterDay == 6) {
       after = new Date(after.getTime() + d2)
     }
+    after=new Date(after.getTime()+25920000)
     // 0 1 2 3 4 5 6
     // before after
     // if after == 1 || after ==0 || after ==6 plus 2 day
     // if before==0 || before ==6  make before ==1 and doit again
-
+    
     return dayjs(after).format('YYYY-MM-DD HH:mm:ss')
   }
   const getT5 = function (date) {
