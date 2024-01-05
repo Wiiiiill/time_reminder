@@ -6,13 +6,34 @@ import { FaTimes } from "react-icons/fa";
   localStorage.setItem("dates", JSON.stringify([]));
 export default function App() {
   const [ram, setRam] = useState(1);
+  ram;
   const [showAdd, setShowAdd] = useState(false);
   const [dates, setDates] = useState(JSON.parse(localStorage.getItem("dates")));
-  const [obj, setObj] = useState({ code: "", time: "" });
+  const [obj, setObj] = useState({ code: "", time: "", reminder: false });
   useEffect(() => {
     let timer = setInterval(() => {
       setRam(Math.random());
     }, 1000);
+    return () => {
+      clearInterval(timer);
+    };
+  }, []);
+  useEffect(() => {
+    let timer = setInterval(() => {
+      setRam(Math.random());
+      let curt = new Date().getTime();
+      dates
+        .filter((e) => e.reminder)
+        .forEach((e) => {
+          console.log(e, curt - new Date(e.t3).getTime());
+          if (new Date(e.t3).getTime() - curt <= 3600000) {
+            alert(`编号:${e.code}的3.3天快到了`);
+          }
+          if (new Date(e.t5).getTime() - curt <= 3600000) {
+            alert(`编号:${e.code}的5天快到了`);
+          }
+        });
+    }, 60000);
     return () => {
       clearInterval(timer);
     };
@@ -37,9 +58,14 @@ export default function App() {
     }
     setDates([
       ...dates,
-      { ...obj, time: obj.time, t3: getT3(obj.time), t5: getT5(obj.time) },
+      {
+        ...obj,
+        time: dayjs(new Date(obj.time)).format("YYYY-MM-DD HH:mm:ss"),
+        t3: getT3(obj.time),
+        t5: getT5(obj.time),
+      },
     ]);
-    setObj({ code: "", time: "" });
+    setObj({ code: "", time: "", reminder: false });
   };
   const isValidDate = function (date) {
     return date instanceof Date && !isNaN(date.getTime());
@@ -107,6 +133,11 @@ export default function App() {
     return dayjs(after).format("YYYY-MM-DD HH:mm:ss");
   };
   const del = function (i) {
+    dates.splice(i, 1);
+    setDates([...dates]);
+  };
+  const onToggle = (e, i) => {
+    dates.splice(i, 1, { ...e, reminder: !e.reminder });
     setDates([...dates]);
   };
   return (
@@ -157,13 +188,28 @@ export default function App() {
                 onChange={(e) => setObj({ ...obj, time: e.target.value })}
               />
             </div>
+            <div className="form-control form-control-check">
+              <label>提醒</label>
+              <input
+                type="checkbox"
+                checked={obj.reminder}
+                value={obj.reminder}
+                onChange={(e) =>
+                  setObj({ ...obj, reminder: e.currentTarget.checked })
+                }
+              />
+            </div>
             <input type="submit" value="保存" className="btn btn-block" />
           </form>
         )}
         <div>
           {dates.map((e, i) => {
             return (
-              <div key={i} className="task">
+              <div
+                key={i}
+                className={`task ${e.reminder && "reminder"}`}
+                onDoubleClick={() => onToggle(e, i)}
+              >
                 <h3>
                   {e.code}
                   <FaTimes
@@ -181,7 +227,11 @@ export default function App() {
         <footer>
           <p>
             Developed by{" "}
-            <a href="https://github.com/Wiiiiill" target="_blank">
+            <a
+              href="https://github.com/Wiiiiill"
+              rel="noreferrer"
+              target="_blank"
+            >
               github.com/Wiiiiill
             </a>
           </p>
