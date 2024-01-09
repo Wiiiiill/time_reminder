@@ -14,12 +14,15 @@ body {
   border-radius: 5px;
   margin-bottom: 24px;
 }
-
+.full {
+  flex: 0 1 100%;
+}
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
+  flex-wrap: wrap;
 }
 
 .btn {
