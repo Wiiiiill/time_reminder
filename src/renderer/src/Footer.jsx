@@ -9,7 +9,6 @@ export default function Footer() {
           github.com/Wiiiiill
         </a>
       </p>
-
       {false && <img src={zfb} style={{ width: '100%', height: '100%' }} />}
       {false && <img src={wx} style={{ width: '100%', height: '100%' }} />}
     </footer>

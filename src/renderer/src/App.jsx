@@ -8,7 +8,7 @@ export default function App() {
   ram
   const [showAdd, setShowAdd] = useState(false)
   const [dates, setDates] = useState(JSON.parse(localStorage.getItem('dates')))
-  const [obj, setObj] = useState({ code: '', time: '', reminder: false })
+  const [obj, setObj] = useState({ code: '', time: '', reminder: true })
   useEffect(() => {
     let timer = setInterval(() => {
       setRam(Math.random())
@@ -64,7 +64,7 @@ export default function App() {
         t5: getT5(obj.time)
       }
     ])
-    setObj({ code: '', time: '', reminder: false })
+    setObj({ code: '', time: '', reminder: true })
   }
   const isValidDate = function (date) {
     return date instanceof Date && !isNaN(date.getTime())
@@ -74,7 +74,6 @@ export default function App() {
   //然后如果是周末上传的 都统一调整为周一的00:00上传
   const d1 = 86400000
   const d2 = 172800000
-  const d33 = 285120000
   const d5 = 432000000
   const getT3 = function (date) {
     let before = new Date(date)
@@ -167,6 +166,17 @@ export default function App() {
               取消
             </button>
           )}
+          <div>
+            <button
+              className="btn"
+              onClick={() => {
+                setShowAdd(false)
+              }}
+              style={{ backgroundColor: 'red' }}
+            >
+              取消
+            </button>
+          </div>
         </header>
         {showAdd && (
           <form className="add-form" onSubmit={onSubmit}>
