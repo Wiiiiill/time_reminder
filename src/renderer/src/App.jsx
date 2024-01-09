@@ -1,6 +1,7 @@
 import dayjs from 'dayjs'
 import { useState, useEffect } from 'react'
 import { FaTimes } from 'react-icons/fa'
+import Footer from './Footer'
 !localStorage.getItem('dates') && localStorage.setItem('dates', JSON.stringify([]))
 export default function App() {
   const [ram, setRam] = useState(1)
@@ -98,12 +99,12 @@ export default function App() {
     if (afterDay == 1 || afterDay == 0 || afterDay == 6) {
       after = new Date(after.getTime() + d2)
     }
-    after=new Date(after.getTime()+25920000)
+    after = new Date(after.getTime() + 25920000)
     // 0 1 2 3 4 5 6
     // before after
     // if after == 1 || after ==0 || after ==6 plus 2 day
     // if before==0 || before ==6  make before ==1 and doit again
-    
+
     return dayjs(after).format('YYYY-MM-DD HH:mm:ss')
   }
   const getT5 = function (date) {
@@ -140,91 +141,86 @@ export default function App() {
     setDates([...dates])
   }
   return (
-    <div className="container">
-      <header className="header">
-        <h2>当前时间:{dayjs().format('YYYY-MM-DD HH:mm:ss')}</h2>
-        {!showAdd && (
-          <button
-            className="btn"
-            onClick={() => {
-              setShowAdd(true)
-            }}
-            style={{ backgroundColor: 'green' }}
-          >
-            添加
-          </button>
-        )}
-        {showAdd && (
-          <button
-            className="btn"
-            onClick={() => {
-              setShowAdd(false)
-            }}
-            style={{ backgroundColor: 'red' }}
-          >
-            取消
-          </button>
-        )}
-      </header>
-      {showAdd && (
-        <form className="add-form" onSubmit={onSubmit}>
-          <div className="form-control">
-            <label>编号</label>
-            <input
-              type="text"
-              placeholder="输入编号"
-              value={obj.code}
-              onChange={(e) => setObj({ ...obj, code: e.target.value })}
-            />
-          </div>
-          <div className="form-control">
-            <label>时间</label>
-            <input
-              type="text"
-              placeholder="输入时间"
-              value={obj.time}
-              onChange={(e) => setObj({ ...obj, time: e.target.value })}
-            />
-          </div>
-          <div className="form-control form-control-check">
-            <label>提醒</label>
-            <input
-              type="checkbox"
-              checked={obj.reminder}
-              value={obj.reminder}
-              onChange={(e) => setObj({ ...obj, reminder: e.currentTarget.checked })}
-            />
-          </div>
-          <input type="submit" value="保存" className="btn btn-block" />
-        </form>
-      )}
-      <div>
-        {dates.map((e, i) => {
-          return (
-            <div
-              key={i}
-              className={`task ${e.reminder && 'reminder'}`}
-              onDoubleClick={() => onToggle(e, i)}
+    <div>
+      <div className="container">
+        <header className="header">
+          <h2>当前时间:{dayjs().format('YYYY-MM-DD HH:mm:ss')}</h2>
+          {!showAdd && (
+            <button
+              className="btn"
+              onClick={() => {
+                setShowAdd(true)
+              }}
+              style={{ backgroundColor: 'green' }}
             >
-              <h3>
-                {e.code}
-                <FaTimes style={{ color: 'red', cursor: 'pointer' }} onClick={() => del(i)} />
-              </h3>
-              <p> 记录时间:{e.time}</p>
-              <p> 3.3天:{e.t3}</p>
-              <p> 5天:{e.t5}</p>
+              添加
+            </button>
+          )}
+          {showAdd && (
+            <button
+              className="btn"
+              onClick={() => {
+                setShowAdd(false)
+              }}
+              style={{ backgroundColor: 'red' }}
+            >
+              取消
+            </button>
+          )}
+        </header>
+        {showAdd && (
+          <form className="add-form" onSubmit={onSubmit}>
+            <div className="form-control">
+              <label>编号</label>
+              <input
+                type="text"
+                placeholder="输入编号"
+                value={obj.code}
+                onChange={(e) => setObj({ ...obj, code: e.target.value })}
+              />
             </div>
-          )
-        })}
+            <div className="form-control">
+              <label>时间</label>
+              <input
+                type="text"
+                placeholder="输入时间"
+                value={obj.time}
+                onChange={(e) => setObj({ ...obj, time: e.target.value })}
+              />
+            </div>
+            <div className="form-control form-control-check">
+              <label>提醒</label>
+              <input
+                type="checkbox"
+                checked={obj.reminder}
+                value={obj.reminder}
+                onChange={(e) => setObj({ ...obj, reminder: e.currentTarget.checked })}
+              />
+            </div>
+            <input type="submit" value="保存" className="btn btn-block" />
+          </form>
+        )}
+        <div>
+          {dates.map((e, i) => {
+            return (
+              <div
+                key={i}
+                className={`task ${e.reminder && 'reminder'}`}
+                onDoubleClick={() => onToggle(e, i)}
+              >
+                <h3>
+                  {e.code}
+                  <FaTimes style={{ color: 'red', cursor: 'pointer' }} onClick={() => del(i)} />
+                </h3>
+                <p> 记录时间:{e.time}</p>
+                <p> 3.3天:{e.t3}</p>
+                <p> 5天:{e.t5}</p>
+              </div>
+            )
+          })}
+        </div>
       </div>
-      <footer>
-        <p>
-          Developed by{' '}
-          <a href="https://github.com/Wiiiiill" rel="noreferrer" target="_blank">
-            github.com/Wiiiiill
-          </a>
-        </p>
-      </footer>
+      <Footer />
     </div>
   )
 }

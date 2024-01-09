@@ -1,5 +1,5 @@
 appId: com.electron.app
-productName: time-reminder
+productName: 好哥哥绩效提醒器
 directories:
   buildResources: build
 files:
@@ -11,7 +11,7 @@ files:
 asarUnpack:
   - resources/**
 win:
-  executableName: time-reminder
+  executableName: 好哥哥绩效提醒器
 nsis:
   artifactName: ${name}-${version}-setup.${ext}
   shortcutName: ${productName}
