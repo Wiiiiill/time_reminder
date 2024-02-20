@@ -1,3 +1,5 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable react/no-unknown-property */
 import { read, utils } from 'xlsx'
 import fs from 'file-saver'
 import XLSX from 'xlsx' // 引入xlsx
@@ -34,19 +36,29 @@ export default function App() {
   }, [])
   useEffect(() => {
     let timer = setInterval(() => {
+      console.log('tick', dates)
       setRam(Math.random())
       let curt = new Date().getTime()
+      let del = []
       dates
         .filter((e) => e.reminder)
         .forEach((e) => {
-          console.log(e, curt - new Date(e.t3).getTime())
           if (new Date(e.t3).getTime() - curt <= 3600000) {
             alert(`编号:${e.code}的3.3天快到了`)
+            del.push(e.code)
           }
           if (new Date(e.t5).getTime() - curt <= 3600000) {
             alert(`编号:${e.code}的5天快到了`)
+            del.push(e.code)
           }
         })
+      for (let index = 0; index < del.length; index++) {
+        dates.splice(
+          dates.findIndex((e) => e.code == del[index]),
+          1
+        )
+        setDates([...dates])
+      }
     }, 60000)
     return () => {
       clearInterval(timer)
@@ -207,11 +219,11 @@ export default function App() {
             reminder: true
           }
         })
+        t
         setDates([...t, ...dates])
       }
     }
   }
-  const upload = () => {}
   return (
     <div>
       <div className="container">
